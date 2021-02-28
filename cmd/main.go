@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -14,11 +16,14 @@ import (
 const defaultPort = "8080"
 
 func main() {
-	run()
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "this is the startup error: %s\n", err)
+		os.Exit(1)
+	}
 }
 
 // refactor to run functions
-func run() {
+func run() error {
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -26,6 +31,11 @@ func run() {
 	}
 
 	// connect to db
+	_, err := setupDatabase()
+
+	if err != nil {
+		return err
+	}
 
 	// create new storage
 
@@ -42,6 +52,25 @@ func run() {
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+
+	return nil
+}
+
+func setupDatabase() (*sqlx.DB, error) {
+	dbPath := goDotEnvVariable("DB")
+	db, err := sqlx.Open("postgres", dbPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Ping()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
 }
 
 func goDotEnvVariable(key string) string {
