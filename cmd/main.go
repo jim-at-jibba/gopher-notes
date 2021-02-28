@@ -8,6 +8,7 @@ import (
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
