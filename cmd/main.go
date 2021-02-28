@@ -1,23 +1,38 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"log"
+	"net/http"
+	"os"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	run()
+}
+
+// refactor to run functions
+func run() {
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
+
+	// connect to db
+
+	// create new storage
+
+	// run migrations
+
+	// create new NotesService and pass storage in
+
+	// switch to chi router
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
