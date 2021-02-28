@@ -5,6 +5,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -41,4 +42,17 @@ func run() {
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
+}
+
+func goDotEnvVariable(key string) string {
+
+	err := godotenv.Load("../.env")
+
+	if err != nil {
+
+		log.Fatalf("Error loading .env file")
+	}
+
+	return os.Getenv(key)
+
 }
