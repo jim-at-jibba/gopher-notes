@@ -1,0 +1,29 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Note {
+  id: ID!
+  text: String!
+  title: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  notes: [Note!]!
+}
+
+input NewNote {
+  text: String!
+  title: String!
+  userId: String!
+}
+
+type Mutation {
+  createNote(input: NewNote!): Note!
+}
