@@ -7,6 +7,7 @@ import (
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
 	"github.com/jim-at-jibba/gopher-notes/pkg/repository"
+	"github.com/jim-at-jibba/gopher-notes/pkg/service"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -51,10 +52,12 @@ func run() error {
 	}
 
 	// create new NotesService and pass storage in
+	noteRepository := repository.NewNoteRepository(db)
+	noteService := service.NewUserService(noteRepository)
 
 	// switch to chi router
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{NoteService: noteService}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
