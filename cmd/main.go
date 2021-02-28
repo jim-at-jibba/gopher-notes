@@ -6,6 +6,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"github.com/jim-at-jibba/gopher-notes/pkg/repository"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -31,16 +32,23 @@ func run() error {
 		port = defaultPort
 	}
 
+	dbPath := goDotEnvVariable("DB")
 	// connect to db
-	_, err := setupDatabase()
+	db, err := setupDatabase(dbPath)
 
 	if err != nil {
 		return err
 	}
 
 	// create new storage
+	storage := repository.NewStorage(db)
 
 	// run migrations
+	err = storage.RunMigrations(dbPath)
+
+	if err != nil {
+		return err
+	}
 
 	// create new NotesService and pass storage in
 
@@ -57,9 +65,8 @@ func run() error {
 	return nil
 }
 
-func setupDatabase() (*sqlx.DB, error) {
-	dbPath := goDotEnvVariable("DB")
-	db, err := sqlx.Open("postgres", dbPath)
+func setupDatabase(connectionString string) (*sqlx.DB, error) {
+	db, err := sqlx.Open("postgres", connectionString)
 
 	if err != nil {
 		return nil, err
