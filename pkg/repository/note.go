@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"github.com/jim-at-jibba/gopher-notes/graph/model"
+	"github.com/jim-at-jibba/gopher-notes/pkg/model"
 	"github.com/jmoiron/sqlx"
 )
 

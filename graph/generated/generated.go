@@ -12,7 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/jim-at-jibba/gopher-notes/graph/model"
+	"github.com/jim-at-jibba/gopher-notes/pkg/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -254,7 +254,7 @@ func (ec *executionContext) field_Mutation_createNote_args(ctx context.Context, 
 	var arg0 model.NewNote
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNewNote(ctx, tmp)
+		arg0, err = ec.unmarshalNNewNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNewNote(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -355,7 +355,7 @@ func (ec *executionContext) _Mutation_createNote(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.Note)
 	fc.Result = res
-	return ec.marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNote(ctx, field.Selections, res)
+	return ec.marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNote(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Note_id(ctx context.Context, field graphql.CollectedField, obj *model.Note) (ret graphql.Marshaler) {
@@ -495,7 +495,7 @@ func (ec *executionContext) _Note_user(ctx context.Context, field graphql.Collec
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_notes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -530,7 +530,7 @@ func (ec *executionContext) _Query_notes(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.([]*model.Note)
 	fc.Result = res
-	return ec.marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNoteᚄ(ctx, field.Selections, res)
+	return ec.marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNoteᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2229,16 +2229,16 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNewNote(ctx context.Context, v interface{}) (model.NewNote, error) {
+func (ec *executionContext) unmarshalNNewNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNewNote(ctx context.Context, v interface{}) (model.NewNote, error) {
 	res, err := ec.unmarshalInputNewNote(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNote(ctx context.Context, sel ast.SelectionSet, v model.Note) graphql.Marshaler {
+func (ec *executionContext) marshalNNote2githubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNote(ctx context.Context, sel ast.SelectionSet, v model.Note) graphql.Marshaler {
 	return ec._Note(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNoteᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Note) graphql.Marshaler {
+func (ec *executionContext) marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNoteᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Note) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2262,7 +2262,7 @@ func (ec *executionContext) marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibba�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNote(ctx, sel, v[i])
+			ret[i] = ec.marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNote(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2275,7 +2275,7 @@ func (ec *executionContext) marshalNNote2ᚕᚖgithubᚗcomᚋjimᚑatᚑjibba�
 	return ret
 }
 
-func (ec *executionContext) marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐNote(ctx context.Context, sel ast.SelectionSet, v *model.Note) graphql.Marshaler {
+func (ec *executionContext) marshalNNote2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐNote(ctx context.Context, sel ast.SelectionSet, v *model.Note) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2300,7 +2300,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋjimᚑatᚑjibbaᚋgopherᚑnotesᚋpkgᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")

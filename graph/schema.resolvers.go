@@ -8,14 +8,14 @@ import (
 	"fmt"
 
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
-	"github.com/jim-at-jibba/gopher-notes/graph/model"
+	model1 "github.com/jim-at-jibba/gopher-notes/pkg/model"
 )
 
-func (r *mutationResolver) CreateNote(ctx context.Context, input model.NewNote) (*model.Note, error) {
+func (r *mutationResolver) CreateNote(ctx context.Context, input model1.NewNote) (*model1.Note, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Notes(ctx context.Context) ([]*model.Note, error) {
+func (r *queryResolver) Notes(ctx context.Context) ([]*model1.Note, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
