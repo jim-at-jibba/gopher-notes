@@ -12,7 +12,13 @@ import (
 )
 
 func (r *mutationResolver) CreateNote(ctx context.Context, input model.NewNote) (*model.Note, error) {
-	panic(fmt.Errorf("not implemented"))
+	note, err := r.NoteService.CreateNoteFromRequest(input)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return note, nil
 }
 
 func (r *queryResolver) Notes(ctx context.Context) ([]*model.Note, error) {
