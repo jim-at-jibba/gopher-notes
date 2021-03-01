@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"github.com/gofrs/uuid"
 	"github.com/jim-at-jibba/gopher-notes/pkg/model"
 	"github.com/jmoiron/sqlx"
