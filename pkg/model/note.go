@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql"
 	"errors"
 )
 
@@ -19,12 +20,12 @@ type Note struct {
 }
 
 type DBNote struct {
-	ID        string `json:"id" db:"id"`
-	Title     string `json:"title" db:"title"`
-	Text      string `json:"text" db:"text"`
-	UserID    string `json:"userId" db:"user_id"`
-	CreatedAt string `json:"createdAt" db:"created_at"`
-	UpdatedAt string `json:"updatedAt" db:"updated_at"`
+	ID        string         `json:"id" db:"id"`
+	Title     string         `json:"title" db:"title"`
+	Text      string         `json:"text" db:"text"`
+	UserID    string         `json:"userId" db:"user_id"`
+	CreatedAt string         `json:"createdAt" db:"created_at"`
+	UpdatedAt sql.NullString `json:"updatedAt" db:"updated_at"`
 }
 
 func (creationRequest *NewNote) IsValid() bool {
