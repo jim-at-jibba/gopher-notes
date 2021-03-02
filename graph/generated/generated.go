@@ -55,7 +55,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Notes func(childComplexity int) int
+		Notes func(childComplexity int, userID string) int
 	}
 
 	User struct {
@@ -68,7 +68,7 @@ type MutationResolver interface {
 	CreateNote(ctx context.Context, input model.NewNote) (*model.Note, error)
 }
 type QueryResolver interface {
-	Notes(ctx context.Context) ([]*model.Note, error)
+	Notes(ctx context.Context, userID string) ([]*model.Note, error)
 }
 
 type executableSchema struct {
@@ -131,7 +131,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.Notes(childComplexity), true
+		args, err := ec.field_Query_notes_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Notes(childComplexity, args["userId"].(string)), true
 
 	case "User.id":
 		if e.complexity.User.ID == nil {
@@ -228,7 +233,7 @@ type User {
 }
 
 type Query {
-  notes: [Note!]!
+  notes(userId: String!): [Note!]!
 }
 
 input NewNote {
@@ -275,6 +280,21 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_notes_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["userId"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["userId"] = arg0
 	return args, nil
 }
 
@@ -514,9 +534,16 @@ func (ec *executionContext) _Query_notes(ctx context.Context, field graphql.Coll
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_notes_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Notes(rctx)
+		return ec.resolvers.Query().Notes(rctx, args["userId"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

@@ -15,7 +15,7 @@ type User {
 }
 
 type Query {
-  notes: [Note!]!
+  notes(userId: String!): [Note!]!
 }
 
 input NewNote {

@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
 	"github.com/jim-at-jibba/gopher-notes/pkg/model"
@@ -21,8 +20,14 @@ func (r *mutationResolver) CreateNote(ctx context.Context, input model.NewNote) 
 	return note, nil
 }
 
-func (r *queryResolver) Notes(ctx context.Context) ([]*model.Note, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) Notes(ctx context.Context, userID string) ([]*model.Note, error) {
+	notes, err := r.NoteService.ListNotes(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return notes, err
 }
 
 // Mutation returns generated.MutationResolver implementation.

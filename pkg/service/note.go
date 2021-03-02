@@ -9,6 +9,7 @@ import (
 type NoteService interface {
 	CreateNote(note *model.Note) (*model.Note, error)
 	CreateNoteFromRequest(model.NewNote) (*model.Note, error)
+	ListNotes(userId string) ([]*model.Note, error)
 }
 
 type noteService struct {
@@ -40,4 +41,14 @@ func (n *noteService) CreateNoteFromRequest(creationRequest model.NewNote) (*mod
 		return nil, err
 	}
 	return n.CreateNote(preparedNote)
+}
+
+func (n *noteService) ListNotes(userId string) ([]*model.Note, error) {
+	notes, err := n.repo.ListNotes(userId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return notes, nil
 }

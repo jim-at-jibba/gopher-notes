@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/gofrs/uuid"
 	"github.com/jim-at-jibba/gopher-notes/pkg/model"
 	"github.com/jmoiron/sqlx"
@@ -9,6 +10,7 @@ import (
 
 type NoteRespository interface {
 	CreateNote(note *model.Note) (*model.Note, error)
+	ListNotes(userId string) ([]*model.Note, error)
 }
 
 type noteRepository struct {
@@ -38,5 +40,34 @@ func (n *noteRepository) CreateNote(note *model.Note) (*model.Note, error) {
 	}
 
 	return note, nil
+}
 
+func (n *noteRepository) ListNotes(userId string) ([]*model.Note, error) {
+
+	var dbnotes []*model.DBNote
+	var notes []*model.Note
+
+	if err := n.db.Select(&dbnotes, `SELECT id, title, text, user_id, created_at FROM "notes" WHERE user_id=$1`, userId); err != nil {
+		log.Printf("error getting the notes: %v", err)
+		return []*model.Note{}, err
+	}
+
+	for _, note := range dbnotes {
+		fmt.Printf("Note %v \n", note)
+		var nt *model.Note
+
+		user := &model.User{
+			ID: note.UserID,
+		}
+
+		nt = &model.Note{
+			ID:        note.ID,
+			Title:     note.Title,
+			Text:      note.Text,
+			User:      user,
+			CreatedAt: note.CreatedAt,
+		}
+		notes = append(notes, nt)
+	}
+	return notes, nil
 }
