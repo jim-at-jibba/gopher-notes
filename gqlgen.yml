@@ -45,6 +45,8 @@ autobind:
 models:
   User:
     model: github.com/jim-at-jibba/gopher-notes/pkg/model.User
+  NewUser:
+    model: github.com/jim-at-jibba/gopher-notes/pkg/model.NewUser
   NewNote:
     model: github.com/jim-at-jibba/gopher-notes/pkg/model.NewNote
   Note:
