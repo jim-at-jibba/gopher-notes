@@ -53,7 +53,7 @@ func run() error {
 
 	// create new NotesService and pass storage in
 	noteRepository := repository.NewNoteRepository(db)
-	noteService := service.NewUserService(noteRepository)
+	noteService := service.NewNoteService(noteRepository)
 
 	// switch to chi router
 

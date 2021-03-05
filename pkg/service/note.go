@@ -16,7 +16,7 @@ type noteService struct {
 	repo repository.NoteRespository
 }
 
-func NewUserService(userRepo repository.NoteRespository) NoteService {
+func NewNoteService(userRepo repository.NoteRespository) NoteService {
 	return &noteService{repo: userRepo}
 }
 
