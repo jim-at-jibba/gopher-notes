@@ -16,8 +16,8 @@ type noteService struct {
 	repo repository.NoteRespository
 }
 
-func NewNoteService(userRepo repository.NoteRespository) NoteService {
-	return &noteService{repo: userRepo}
+func NewNoteService(noteRepo repository.NoteRespository) NoteService {
+	return &noteService{repo: noteRepo}
 }
 
 func (n *noteService) CreateNote(note *model.Note) (*model.Note, error) {
