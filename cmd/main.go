@@ -55,9 +55,13 @@ func run() error {
 	noteRepository := repository.NewNoteRepository(db)
 	noteService := service.NewNoteService(noteRepository)
 
+	// create user repo and service
+	userRepository := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepository)
+
 	// switch to chi router
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{NoteService: noteService}}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{NoteService: noteService, UserService: userService}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

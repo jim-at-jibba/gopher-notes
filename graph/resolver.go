@@ -8,4 +8,5 @@ import "github.com/jim-at-jibba/gopher-notes/pkg/service"
 
 type Resolver struct {
 	NoteService service.NoteService
+	UserService service.UserService
 }
