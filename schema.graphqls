@@ -11,7 +11,7 @@ type Note {
 
 type User {
   id: ID!
-  name: String!
+  username: String!
 }
 
 type Query {
@@ -24,6 +24,13 @@ input NewNote {
   userId: String!
 }
 
+
+input NewUser {
+  username: String!
+  password: String!
+}
+
 type Mutation {
   createNote(input: NewNote!): Note!
+  createUser(input: NewUser!): User!
 }
