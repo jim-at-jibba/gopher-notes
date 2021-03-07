@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gofrs/uuid"
 	"github.com/jim-at-jibba/gopher-notes/pkg/model"
@@ -10,6 +11,7 @@ import (
 
 type UserRepository interface {
 	CreateUser(user *model.DBUser) (*model.User, error)
+	GetUserIdByUsername(username string) (string, error)
 }
 
 type userRepository struct {
@@ -42,4 +44,21 @@ func (u *userRepository) CreateUser(dbUser *model.DBUser) (*model.User, error) {
 		ID:       dbUser.ID,
 		Username: dbUser.Username,
 	}, nil
+}
+
+func (u *userRepository) GetUserIdByUsername(username string) (string, error) {
+	if username == "" {
+		return "", errors.New("username is required")
+	}
+	var id string
+	const userQuery = `SELECT id FROM users WHERE username = $1`
+
+	err := u.db.Get(&id, userQuery, username)
+
+	if err != nil {
+		return "", err
+	}
+
+	fmt.Printf("user %+v", id)
+	return id, err
 }

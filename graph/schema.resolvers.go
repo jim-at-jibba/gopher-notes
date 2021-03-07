@@ -5,7 +5,9 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"github.com/jim-at-jibba/gopher-notes/pkg/jwt"
 	"github.com/jim-at-jibba/gopher-notes/pkg/model"
 )
 
@@ -22,6 +24,8 @@ func (r *mutationResolver) CreateNote(ctx context.Context, input model.NewNote) 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	user, err := r.UserService.CreateUserFromRequest(input)
 
+	token, err := jwt.GenerateToken(input.Username, user.ID)
+	fmt.Println("Token %v:", token)
 	if err != nil {
 		return nil, err
 	}

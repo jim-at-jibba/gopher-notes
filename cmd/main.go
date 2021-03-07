@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi"
 	"github.com/jim-at-jibba/gopher-notes/graph"
 	"github.com/jim-at-jibba/gopher-notes/graph/generated"
+	"github.com/jim-at-jibba/gopher-notes/pkg/auth"
 	"github.com/jim-at-jibba/gopher-notes/pkg/repository"
 	"github.com/jim-at-jibba/gopher-notes/pkg/service"
 	"github.com/jmoiron/sqlx"
@@ -60,14 +62,16 @@ func run() error {
 	userService := service.NewUserService(userRepository)
 
 	// switch to chi router
+	router := chi.NewRouter()
 
+	router.Use(auth.Middleware(userService))
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{NoteService: noteService, UserService: userService}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, srv))
 
 	return nil
 }

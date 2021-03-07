@@ -9,6 +9,7 @@ import (
 type UserService interface {
 	CreateUser(user *model.DBUser) (*model.User, error)
 	CreateUserFromRequest(creationRequest model.NewUser) (*model.User, error)
+	GetUserIdByUsername(username string) (string, error)
 }
 
 type userService struct {
@@ -58,4 +59,15 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func (u *userService) GetUserIdByUsername(username string) (string, error) {
+
+	returnedUserId, err := u.repo.GetUserIdByUsername(username)
+
+	if err != nil {
+		return "", err
+	}
+
+	return returnedUserId, nil
 }
